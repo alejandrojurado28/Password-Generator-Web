@@ -1,5 +1,6 @@
 import { Logo } from "@/components/Shared/Logo";
 import { Sidebar } from "@/components/Shared/Sidebar";
+import { SidebarMobile } from "@/components/Shared/SidebarMobile";
 
 export default function LayoutRoutes({
   children,
@@ -10,10 +11,10 @@ export default function LayoutRoutes({
         <div className="py-1 text-white">
           <Logo />
         </div>
-        <div>SidebarMobile</div>
+        <SidebarMobile />
       </div>
       <div className="flex h-full">
-        <div className="max-w-lg hidden lg:flex h-full w-72 flex-col bg-blue-800 px-4 text-white">
+        <div className="max-w-lg hidden lg:flex h-full w-72 flex-col fixed bg-blue-800 px-4 text-white">
           <Sidebar />
         </div>
         <div className="w-full lg:pl-72">
