@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -19,6 +21,7 @@ import {
 import { ChevronDown, Icon } from "lucide-react";
 import { dataHeaderMain } from "./HeaderMain.data";
 import { useState } from "react";
+import { FormAddElement } from "../FormAddElement";
   
 
 export function HeaderMain() {
@@ -36,8 +39,8 @@ export function HeaderMain() {
       <h1 className="text-xl mf_text-3xl font-semibold">
         Todas las cajas fuertes
       </h1>
-      <Dialog>
-        <DropdownMenu>
+      <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+        <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
             <DropdownMenuTrigger asChild>
                 <Button>
                     Nueva <ChevronDown />
@@ -68,6 +71,7 @@ export function HeaderMain() {
             <DialogHeader>
                 <DialogTitle>Nuevo elemento</DialogTitle>
             </DialogHeader>
+            {typeElement === 'password' && <FormAddElement />}
         </DialogContent>
       </Dialog>
     </div>
