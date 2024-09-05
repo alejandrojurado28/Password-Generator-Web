@@ -29,9 +29,13 @@ import { copyClipboard } from "@/lib/copyClipboard";
 import { generatePassword } from "@/lib/generatePassword";
 import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export function FormAddElement() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,10 +54,30 @@ export function FormAddElement() {
   });
 
   // 2. Define a submit handler.
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await axios.post("/api/items", values);
+      toast({ title: "Item created" });
+
+      form.reset({
+        typeElement: "",
+        isFavourite: false,
+        name: "",
+        directory: "",
+        username: "",
+        password: "",
+        urlWebsite: "",
+        notes: "",
+        userId: "jsdhkl",
+      });
+
+      router.refresh();
+    } catch (error) {
+      toast({
+        title: "Something went wrong",
+        variant: "destructive",
+      });
+    }
   };
 
   const generateRandomPassword = () => {
