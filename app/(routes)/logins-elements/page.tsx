@@ -1,10 +1,9 @@
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
-
 import { redirect } from "next/navigation";
 import { DataTableItems } from "@/components/Shared/DataTableItems";
 
-export default async function FavouritesPage() {
+export default async function LoginsElementsPage() {
   const session = await getServerSession();
 
   if (!session || !session.user?.email) {
@@ -13,12 +12,12 @@ export default async function FavouritesPage() {
 
   const user = await db.user.findUnique({
     where: {
-      email: session?.user?.email,
+      email: session?.user.email,
     },
     include: {
       elements: {
         where: {
-          isFavourite: true,
+          typeElement: "Inicio de sesión",
         },
         orderBy: {
           createdAt: "desc",
@@ -28,12 +27,16 @@ export default async function FavouritesPage() {
   });
 
   if (!user || !user.elements) {
-    redirect("/");
+    return redirect("/");
   }
+
+  console.log(user);
 
   return (
     <div>
-      <h1 className="text-xl md:text-3xl font-semibold">List of favourites</h1>
+      <h1 className="text-xl md:text-3xl font-semibold">
+        List of logins elements
+      </h1>
       <DataTableItems elements={user.elements} />
     </div>
   );
